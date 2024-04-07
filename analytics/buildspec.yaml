@@ -1,0 +1,33 @@
+version: 0.2
+env:
+  parameter-store:
+    REPOSITORY_URI: sysmex-esupply-sonar-token
+phases:
+  install:
+    runtime-versions:
+      docker: 18
+      python: 3.9
+  pre_build:
+    commands:
+      - echo BEGIN Logging in to Amazon ECR......
+      - echo $AWS_DEFAULT_REGION
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+      - export VERSION_NUMBER=$(echo $CODEBUILD_WEBHOOK_TRIGGER | sed 's/.*\///')
+      - echo $VERSION_NUMBER
+  build:
+    commands:
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
+      - echo Build started on `date`
+      - echo $IMAGE_TAG
+      - echo Building the Docker image...
+      - docker build -t ${API_REPOSITORY_URI} -f analytics/Dockerfile .
+      - docker tag ${API_REPOSITORY_URI}:latest ${API_REPOSITORY_URI}:${IMAGE_TAG}
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - docker push ${API_REPOSITORY_URI}:${IMAGE_TAG}
+artifacts:
+  files:
+    - '**/*'
+  name: analytics-$(date +%Y-%m-%d)
