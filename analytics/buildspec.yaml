@@ -1,7 +1,6 @@
 version: 0.2
 env:
-  parameter-store:
-    REPOSITORY_URI: sysmex-esupply-sonar-token
+  REPOSITORY_URI: 529695442313.dkr.ecr.us-east-1.amazonaws.com/test
 phases:
   install:
     runtime-versions:
@@ -17,7 +16,7 @@ phases:
   build:
     commands:
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      - IMAGE_TAG=${COMMIT_HASH:=latest}
+      - IMAGE_TAG=$CODEBUILD_BUILD_NUMBER
       - echo Build started on `date`
       - echo $IMAGE_TAG
       - echo Building the Docker image...
@@ -30,4 +29,4 @@ phases:
 artifacts:
   files:
     - '**/*'
-  name: analytics-$(date +%Y-%m-%d)
+  name: $BUILD_VERSION
