@@ -1,6 +1,6 @@
 version: 0.2
 env:
-  REPOSITORY_URI: 402846102310.dkr.ecr.us-east-1.amazonaws.com/analytics
+  API_REPOSITORY_URI: 402846102310.dkr.ecr.us-east-1.amazonaws.com/analytics
   AWS_DEFAULT_REGION: "us-east-1"
 phases:
   pre_build:
