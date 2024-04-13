@@ -1,12 +1,13 @@
 version: 0.2
 env:
   REPOSITORY_URI: 402846102310.dkr.ecr.us-east-1.amazonaws.com/analytics
+  AWS_DEFAULT_REGION: "us-east-1"
 phases:
   pre_build:
     commands:
       - echo BEGIN Logging in to Amazon ECR......
       - echo $AWS_DEFAULT_REGION
-      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 402846102310.dkr.ecr.us-east-1.amazonaws.com
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION | sed -e 's/-e none//g')
       - export VERSION_NUMBER=$(echo $CODEBUILD_WEBHOOK_TRIGGER | sed 's/.*\///')
       - echo $VERSION_NUMBER
   build:
