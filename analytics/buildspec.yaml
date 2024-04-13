@@ -7,9 +7,7 @@ phases:
     commands:
       - echo BEGIN Logging in to Amazon ECR......
       - echo $AWS_DEFAULT_REGION
-      - $(aws ecr get-login --region $AWS_DEFAULT_REGION | sed -e 's/-e none//g')
-      - export VERSION_NUMBER=$(echo $CODEBUILD_WEBHOOK_TRIGGER | sed 's/.*\///')
-      - echo $VERSION_NUMBER
+      - aws ecr get-login-password | docker login --username AWS --password-stdin $API_REPOSITORY_URI
   build:
     commands:
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
@@ -17,12 +15,12 @@ phases:
       - echo Build started on `date`
       - echo $IMAGE_TAG
       - echo Building the Docker image...
-      - docker build -t ${API_REPOSITORY_URI}:latest -f analytics/Dockerfile .
-      - docker tag ${API_REPOSITORY_URI}:latest ${API_REPOSITORY_URI}:${IMAGE_TAG}
+      - docker build -t $API_REPOSITORY_URI:latest -f analytics/Dockerfile .
+      - docker tag $API_REPOSITORY_URI:latest $API_REPOSITORY_URI:$IMAGE_TAG
   post_build:
     commands:
       - echo Build completed on `date`
-      - docker push ${API_REPOSITORY_URI}:${IMAGE_TAG}
+      - docker push $API_REPOSITORY_URI:$IMAGE_TAG
 artifacts:
   files:
     - '**/*'
