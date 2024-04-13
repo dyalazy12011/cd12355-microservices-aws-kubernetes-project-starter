@@ -6,7 +6,7 @@ phases:
     commands:
       - echo BEGIN Logging in to Amazon ECR......
       - echo $AWS_DEFAULT_REGION
-      - aws ecr get-login-password --region region | docker login --username AWS --password-stdin 402846102310.dkr.ecr.region.amazonaws.com
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 402846102310.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
       - export VERSION_NUMBER=$(echo $CODEBUILD_WEBHOOK_TRIGGER | sed 's/.*\///')
       - echo $VERSION_NUMBER
   build:
