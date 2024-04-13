@@ -1,12 +1,11 @@
 version: 0.2
-env:
-  API_REPOSITORY_URI: 402846102310.dkr.ecr.us-east-1.amazonaws.com/analytics
-  AWS_DEFAULT_REGION: "us-east-1"
 phases:
   pre_build:
     commands:
       - echo BEGIN Logging in to Amazon ECR......
       - echo $AWS_DEFAULT_REGION
+      - API_REPOSITORY_URI=402846102310.dkr.ecr.us-east-1.amazonaws.com/analytics
+      - AWS_DEFAULT_REGION=us-east-1
       - aws ecr get-login-password | docker login --username AWS --password-stdin $API_REPOSITORY_URI
   build:
     commands:
