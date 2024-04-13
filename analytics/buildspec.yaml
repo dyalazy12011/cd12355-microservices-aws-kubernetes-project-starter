@@ -17,7 +17,7 @@ phases:
       - echo Build started on `date`
       - echo $IMAGE_TAG
       - echo Building the Docker image...
-      - docker build -t ${API_REPOSITORY_URI} -f analytics/Dockerfile .
+      - docker build -t ${API_REPOSITORY_URI}:latest -f analytics/Dockerfile .
       - docker tag ${API_REPOSITORY_URI}:latest ${API_REPOSITORY_URI}:${IMAGE_TAG}
   post_build:
     commands:
