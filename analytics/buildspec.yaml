@@ -9,6 +9,7 @@ phases:
       - aws ecr get-login-password | docker login --username AWS --password-stdin $API_REPOSITORY_URI
   build:
     commands:
+      - cd analytics
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=$CODEBUILD_BUILD_NUMBER
       - echo Build started on `date`
