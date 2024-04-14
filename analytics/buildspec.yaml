@@ -2,7 +2,7 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - echo BEGIN Logging in to Amazon ECR......
+      - echo BEGIN Logging in to Amazon ECR.....
       - echo $AWS_DEFAULT_REGION
       - API_REPOSITORY_URI=402846102310.dkr.ecr.us-east-1.amazonaws.com/analytics
       - AWS_DEFAULT_REGION=us-east-1
