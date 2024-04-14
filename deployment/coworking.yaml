@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
       - name: coworking
-        image: <DOCKER_IMAGE_URI_FROM_ECR>
+        image: 402846102310.dkr.ecr.us-east-1.amazonaws.com/analytics:14
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -46,16 +46,16 @@ spec:
           timeoutSeconds: 5
         env:
         - name: DB_HOST
-          value: <SERVICE_NAME>-postgresql
+          value: postgresql-service
         - name: DB_PORT
           value: "5432"
         - name: DB_USERNAME
-          value: postgres
+          value: user
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: <SERVICE_NAME>-postgresql
-              key: postgres-password
+              name: dbsecret
+              key: password
         - name: DB_NAME
-          value: postgres
+          value: analytics
       restartPolicy: Always
